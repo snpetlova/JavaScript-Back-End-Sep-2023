@@ -73,3 +73,11 @@
 16.Dynamic navigation
  16.1.conditional options in nav
  16.2.res.locals
+
+17.Error handling
+ 17.1.add 404 page
+ 17.2.redirect missing route to 404
+ 17.3.add global error handled (option)
+ 17.4.add error message util
+
+18.Show error notification in main layout
