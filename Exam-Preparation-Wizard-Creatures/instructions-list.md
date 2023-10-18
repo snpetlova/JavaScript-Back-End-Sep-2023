@@ -81,3 +81,5 @@
  17.4.add error message util
 
 18.Show error notification in main layout
+
+19.Automatically login after register
