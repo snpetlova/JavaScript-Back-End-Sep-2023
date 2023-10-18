@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const userService = require('.././services/userService');
+const { route } = require('./homeController');
 
 router.get('/register', (req, res) => {
     res.render('user/register')
@@ -30,5 +31,10 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token, { httpOnly: true });
     res.redirect('/');
 });
+
+router.get('/logout', (req,res) => {
+    res.clearCookie('token');
+    res.redirect('/');
+})
 
 module.exports = router;

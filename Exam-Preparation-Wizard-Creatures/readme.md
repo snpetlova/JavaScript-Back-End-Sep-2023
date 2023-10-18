@@ -61,3 +61,5 @@
  13.1.install cookie-parser
  13.2.configure cookie-parser
  13.3.set cookie with the token
+
+14.Implement logout
