@@ -24,3 +24,38 @@
  5.1.organize views in folders
 
 6.Add controller folder with home controller
+
+7.Add database
+ 7.1.install mongoose
+ 7.2.connect to db in constants:  DB_URL: 'mongodb://127.0.0.1:27017/wizard-creatures' and in index.js Database Connections
+
+8.Authentication
+ 8.1.user controller
+ 8.2.add controller to routes
+ 8.3.fix navigations in nav bar (login, register, logout)
+ 8.4.render login page
+ 8.5.render register page
+
+9.Add user model
+ 9.1.simple validation in Schema
+ 9.2.add method for register
+ 9.3.create first user record in the db
+ 9.4.validate password missmatch
+ 9.5.validate email already exists
+
+10.Hash password
+ 10.1.install bcrypt
+ 10.2.hash password
+
+11.Login
+ 11.1.find user by email
+ 11.2.validate password with hash
+
+12.Generate jsonwebtoken
+ 12.1.install jsonwebtoken
+ 12.2.promisify jsonwebtoken
+ 12.3.generate secret
+ 12.4.generate token in service login   
+
+13.Return token in cookie
+ 13.1.install cookie-parser
