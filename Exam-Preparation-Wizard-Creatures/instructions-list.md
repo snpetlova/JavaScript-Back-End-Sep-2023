@@ -65,3 +65,11 @@
 14.Implement logout
 
 15.Authentication middleware
+ 15.1.create middleware directory
+ 15.2.add auth middleware and import it in express configuration below cookieParser
+ 15.3.decode the token
+ 15.4.handle invalid token
+
+16.Dynamic navigation
+ 16.1.conditional options in nav
+ 16.2.res.locals
