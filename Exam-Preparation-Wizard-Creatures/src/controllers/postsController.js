@@ -37,8 +37,11 @@ router.get('/:creatureId/details', async (req, res) => {
     const { owner } = creature;
 
     const isOwner = user?._id === owner.toString();
+    const hasVoted = creature.votes?.some(
+        (v)=> v?.toString() === user?._id
+    );
 
-    res.render('post/details', { creature, isOwner });
+    res.render('post/details', { creature, isOwner, hasVoted });
 });
 
 router.get('/:creatureId/edit', async (req, res) => {
