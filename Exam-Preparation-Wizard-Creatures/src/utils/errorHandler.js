@@ -5,7 +5,7 @@ exports.extractErrorMessages = (error) => {
 
     if (isInstanceOfMongoose) {
         const errors = Object.values(error.errors);
-        const msgs = error.map((e) => e.message);
+        const msgs = errors.map((e) => e.message);
         return msgs;
     }
 

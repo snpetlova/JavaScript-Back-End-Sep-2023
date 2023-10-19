@@ -27,7 +27,6 @@ router.post("/register", async (req, res) => {
 
   } catch (error) {
     const errorMessages = extractErrorMessages(error);
-    console.log({ errorMessages });
     res.status(404).render('user/register', {errorMessages})
   } 
 
@@ -48,7 +47,6 @@ router.post("/login", async (req, res) => {
 
   } catch (error) {
     const errorMessages = extractErrorMessages(error);
-    console.log({ errorMessages });
     res.status(404).render('user/login', {errorMessages})
   }
 });

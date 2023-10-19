@@ -1,82 +1,106 @@
-const router = require('express').Router();
-const creatureService = require('.././services/creatureService');
-const {isAuth} = require('.././middlewares/authMiddleware')
+const router = require("express").Router();
+const creatureService = require(".././services/creatureService");
+const { isAuth } = require(".././middlewares/authMiddleware");
+const { extractErrorMessages } = require(".././utils/errorHandler");
 
-router.get('/all-posts', async (req, res) => {
-    const creatures = await creatureService.getAll().lean();
+router.get("/all-posts", async (req, res) => {
+  const creatures = await creatureService.getAll().lean();
 
-    res.render('post/all-posts', { creatures });
+  res.render("post/all-posts", { creatures });
 });
 
-router.get('/create', (req, res) => {
-    res.render('post/create');
+router.get("/create", isAuth, (req, res) => {
+  res.render("post/create");
 });
 
-router.post('/create', isAuth, async (req, res) =>{
-    const { name, species, skinColor, eyeColor, image, description } = req.body;
-    const payload = { name, species, skinColor, eyeColor, image, description, owner: req.user };
+router.post("/create", isAuth, async (req, res) => {
+  const { name, species, skinColor, eyeColor, image, description } = req.body;
+  const payload = {
+    name,
+    species,
+    skinColor,
+    eyeColor,
+    image,
+    description,
+    owner: req.user,
+  };
 
+  try {
     await creatureService.create(payload);
-
-    res.redirect('/posts/all-posts');
-})
-
-router.get('/profile', isAuth, async (req, res) => {
-    const { user } = req;
-
-    const myCreatures = await creatureService.getMyCreatures(user?._id).lean();
-
-    res.render('post/profile', {myCreatures});
+    res.redirect("/posts/all-posts");
+  } catch (error) {
+    const errorMessages = extractErrorMessages(error);
+    res.status(404).render("post/create", { errorMessages });
+  }
 });
 
-router.get('/:creatureId/details', async (req, res) => {
-    const { creatureId } = req.params;
+router.get("/profile", isAuth, async (req, res) => {
+  const { user } = req;
 
-    const creature = await creatureService.singleCreature(creatureId).lean();
+  const myCreatures = await creatureService.getMyCreatures(user?._id).lean();
 
-    const { user } = req;
-    const { owner } = creature;
-
-    const isOwner = user?._id === owner.toString();
-    const hasVoted = creature.votes?.some(
-        (v)=> v?._id.toString() === user?._id
-    );
-    const joinedOwnersEmails = creature.votes.map(v => v.email).join(', ')
-
-    res.render('post/details', { creature, isOwner, hasVoted, joinedOwnersEmails });
+  res.render("post/profile", { myCreatures });
 });
 
-router.get('/:creatureId/edit', async (req, res) => {
-    const { creatureId } = req.params;
-    const creature = await creatureService.singleCreature(creatureId).lean();
+router.get("/:creatureId/details", async (req, res) => {
+  const { creatureId } = req.params;
 
-    res.render('post/edit', { creature });
+  const creature = await creatureService.singleCreature(creatureId).lean();
+
+  const { user } = req;
+  const { owner } = creature;
+
+  const isOwner = user?._id === owner.toString();
+  const hasVoted = creature.votes?.some((v) => v?._id.toString() === user?._id);
+  const joinedOwnersEmails = creature.votes.map((v) => v.email).join(", ");
+
+  res.render("post/details", {
+    creature,
+    isOwner,
+    hasVoted,
+    joinedOwnersEmails,
+  });
 });
 
-router.post('/:creatureId/edit', async (req, res) => {
-    const { creatureId } = req.params;
-    const { name, species, skinColor, eyeColor, image, description } = req.body;
-    const payload = { name, species, skinColor, eyeColor, image, description, owner: req.user };
+router.get("/:creatureId/edit", async (req, res) => {
+  const { creatureId } = req.params;
+  const creature = await creatureService.singleCreature(creatureId).lean();
 
-    await creatureService.update(creatureId, payload)
-    res.redirect(`/posts/${creatureId}/details`);
+  res.render("post/edit", { creature });
 });
 
-router.get('/:creatureId/delete', async (req, res) => {
-    const { creatureId } = req.params;
+router.post("/:creatureId/edit", async (req, res) => {
+  const { creatureId } = req.params;
+  const { name, species, skinColor, eyeColor, image, description } = req.body;
+  const payload = {
+    name,
+    species,
+    skinColor,
+    eyeColor,
+    image,
+    description,
+    owner: req.user,
+  };
 
-    await creatureService.delete(creatureId);
-    
-    res.redirect('/posts/all-posts');
+  await creatureService.update(creatureId, payload);
+  res.redirect(`/posts/${creatureId}/details`);
 });
 
-router.get('/:creatureId/vote', async (req, res) => {
-    const { creatureId } = req.params;
-    const { _id } = req.user;
+router.get("/:creatureId/delete", async (req, res) => {
+  const { creatureId } = req.params;
 
-    await creatureService.addVotesToCreature(creatureId, _id);
+  await creatureService.delete(creatureId);
 
-    res.redirect(`/posts/${creatureId}/details`)
-})
+  res.redirect("/posts/all-posts");
+});
+
+router.get("/:creatureId/vote", async (req, res) => {
+  const { creatureId } = req.params;
+  const { _id } = req.user;
+
+  await creatureService.addVotesToCreature(creatureId, _id);
+
+  res.redirect(`/posts/${creatureId}/details`);
+});
 
 module.exports = router;
