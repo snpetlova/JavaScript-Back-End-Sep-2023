@@ -12,7 +12,7 @@ router.get('/create', (req, res) => {
     res.render('post/create');
 });
 
-router.post('/create', async (req, res) =>{
+router.post('/create', isAuth, async (req, res) =>{
     const { name, species, skinColor, eyeColor, image, description } = req.body;
     const payload = { name, species, skinColor, eyeColor, image, description, owner: req.user };
 
