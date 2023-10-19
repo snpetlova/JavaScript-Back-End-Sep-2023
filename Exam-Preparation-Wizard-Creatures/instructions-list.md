@@ -83,3 +83,34 @@
 18.Show error notification in main layout
 
 19.Automatically login after register
+
+#PART 2:
+
+20.Map pages to nav in both loggedIn and loggedOut state
+
+21.Ad creature model to mongoose
+
+22.Implement All posts page - creatures and details for them
+
+23.Add Details page for creatures
+ 23.1.State if there are no creatures
+ 23.2.If the user is owner he should be able to edit and delete
+ 23.3.If the user is not logged in - no buttons
+ 23.4.If the user is not the owner he should see vote button
+
+24.Vote button 
+ 24.1.When clicked should redirect to the details page for the current creature
+ 24.2.Show emails of the people that voted
+ 24.3.If user has already voted - thank u for voting page
+
+25.Add creature - on success redirect to all posts page
+
+26.Delete creature - on success redirect to all posts page
+
+27.Edit creature - on success redirect to current creature page
+
+28.Route Guards - check
+
+29.Validations - login and register
+
+30.Bonus - show my posts and message if there are no posts
